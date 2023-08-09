@@ -1,0 +1,23 @@
+summary: >
+ Run a query that selects distinct PatientID, grouping by 
+ PatientID, and aggregates distinct values of collection_id 
+ per PatientID, or just counts the number of distinct 
+ collection_id per PatientID, orders the result by those counts, 
+ or just filters only those PatientID that has count > 1.
+
+returns:
+  - name: PatientID
+  - name: count_collection_id_list
+  - name: collection_id_list
+
+query: >
+ SELECT
+    dic_all.PatientID as PatientID
+    COUNT(DISTINCT(dic_all.collection_id)) as count_collection_id_list,
+    STRING_AGG(DISTINCT(dic_all.collection_id), ",") as collection_id_list
+  FROM
+    `bigquery-public-data.idc_current.dicom_all` as dic_all
+  GROUP BY PatientID
+  HAVING count_collection_id_list > 1
+
+

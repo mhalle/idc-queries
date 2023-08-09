@@ -1,0 +1,36 @@
+summary: Select segmentations that have more than N segmentations
+
+parameters:
+  - name: segment_count
+    type: INT64
+    defaultValue: 8
+    description: minimum number of segments
+
+returns:
+  - name: PatientID
+  - name: SeriesInstanceUID
+  - name: collection_id
+
+query: >
+ WITH
+ seg_only AS (
+ SELECT
+   SOPInstanceUID,
+   PatientID,
+   collection_id,
+   SegmentSequence,
+   SeriesInstanceUID
+ FROM
+   `bigquery-public-data.idc_current.dicom_all`
+ WHERE
+   Modality = "SEG"
+   AND SOPClassUID = "1.2.840.10008.5.1.4.1.1.66.4"
+   AND access = "Public")
+  SELECT
+  DISTINCT(PatientID),
+    SeriesInstanceUID,
+    collection_id
+  FROM
+    seg_only
+  WHERE
+    ARRAY_LENGTH(SegmentSequence) > @segment_count
