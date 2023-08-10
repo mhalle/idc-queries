@@ -28,7 +28,7 @@ query: >
           PatientID,
           SeriesInstanceUID
         FROM
-      `   bigquery-public-data.idc_current.dicom_all`
+      `bigquery-public-data.idc_current.dicom_all`
         WHERE
           Modality = "SEG"
           AND SOPClassUID = "1.2.840.10008.5.1.4.1.1.66.4"
