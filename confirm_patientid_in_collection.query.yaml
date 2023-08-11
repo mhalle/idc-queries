@@ -12,7 +12,7 @@ returns:
 
 query: >
  SELECT
-    dic_all.PatientID as PatientID
+    dic_all.PatientID as PatientID,
     COUNT(DISTINCT(dic_all.collection_id)) as count_collection_id_list,
     STRING_AGG(DISTINCT(dic_all.collection_id), ",") as collection_id_list
   FROM
