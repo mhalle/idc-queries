@@ -1,10 +1,14 @@
+summary:   Count number of series and distinct ImagePositionPatient values per series.
+
 description: > 
-  Count number of series and distinct ImagePositionPatient values per series
+  Count number of series and distinct ImagePositionPatient values per series.
   This query can be useful in identifying image series that are not 
-  conventional 3d crossectional images. The WHERE clause is there to 
-  ignore images that are most likely problematic - for example, 
-  some series may have ImagePositionPatient missing altogether, 
-  which will lead to NULL value in that column for the series.
+  conventional 3d crossectional images. 
+  
+  The WHERE clause is there to ignore images that are most likely 
+  problematic - for example, some series may have ImagePositionPatient 
+  missing altogether, which will lead to NULL value in that column 
+  for the series.
 
 query: >
   WITH

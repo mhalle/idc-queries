@@ -10,6 +10,7 @@ queryReturns:
   - name: PatientID
   - name: SeriesInstanceUID
   - name: collection_id
+  - name: NumberOfSegments
 
 query: >
  WITH
@@ -29,8 +30,10 @@ query: >
   SELECT
   DISTINCT(PatientID),
     SeriesInstanceUID,
-    collection_id
+    collection_id,
+    ARRAY_LENGTH(SegmentSequence) as NumberOfSegments
   FROM
     seg_only
   WHERE
-    ARRAY_LENGTH(SegmentSequence) > @segment_count
+    ARRAY_LENGTH(SegmentSequence) >= @segment_count
+  ORDER BY NumberOfSegments
