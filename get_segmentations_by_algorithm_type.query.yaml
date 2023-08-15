@@ -1,0 +1,30 @@
+title: Get segmentations by algorithm type
+summary: Get all segmentations that were generated with a specific algorithm type (default AUTOMATIC)
+
+queryParameters:
+  - name: segmentation_type
+    type: STRING
+    default: AUTOMATIC
+    description: Type of segmentation algorithm used to segment data
+
+queryReturns:
+  - name: SeriesInstanceUID
+  - name: SOPInstanceUID
+  - name: SegmentAlgorithmType
+
+query: >
+  SELECT
+    dicom_all.SeriesInstanceUID,
+    dicom_all.SOPInstanceUID,
+    segmentations.SegmentAlgorithmType
+  FROM
+    `bigquery-public-data.idc_current.segmentations` as segmentations
+  JOIN
+    `bigquery-public-data.idc_current.dicom_all` as dicom_all
+  ON
+    dicom_all.SOPInstanceUID = segmentations.SOPInstanceUID
+  WHERE
+    SegmentAlgorithmType = @segmentation_type
+
+
+

@@ -1,0 +1,37 @@
+description: > 
+  Count number of series and distinct ImagePositionPatient values per series
+  This query can be useful in identifying image series that are not 
+  conventional 3d crossectional images. The WHERE clause is there to 
+  ignore images that are most likely problematic - for example, 
+  some series may have ImagePositionPatient missing altogether, 
+  which will lead to NULL value in that column for the series.
+
+query: >
+  WITH
+  series_counts AS (
+  SELECT
+    SeriesInstanceUID,
+    ANY_VALUE(StudyInstanceUID) AS StudyInstanceUID,
+    COUNT(DISTINCT(SOPInstanceUID)) AS instance_count,
+    COUNT(DISTINCT(ARRAY_TO_STRING(ImagePositionPatient,"/"))) AS position_count,
+    STRING_AGG(DISTINCT(SeriesDescription),",") AS series_desc
+  FROM
+    `bigquery-public-data.idc_current.dicom_all`
+    #  WHERE
+    #    collection_id = "prostatex"
+  GROUP BY
+    SeriesInstanceUID)
+  SELECT
+    # skip some columns to improve readability of the result
+    * EXCEPT (SeriesInstanceUID, StudyInstanceUID),
+    instance_count/position_count AS instances_per_position,
+    # use this URL to see the specific series in IDC image viewer!
+  CONCAT("https://viewer.imaging.datacommons.cancer.gov/viewer/",
+        StudyInstanceUID,"?seriesInstanceUID=",SeriesInstanceUID) AS viewer_url
+  FROM
+    series_counts
+  WHERE
+    position_count > 1
+  ORDER BY
+    instances_per_position DESC
+

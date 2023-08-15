@@ -1,0 +1,24 @@
+summary: Get instances that have a specific ROIName in RTSTRUCT
+
+queryParameters:
+  - name: ROIName
+    type: 'STRING'
+    defaultValue: 'Heart'
+
+queryReturns: 
+  - name: SOPInstanceUID
+  - name: PatientID
+  - name: ROIName
+
+query: >
+  SELECT
+    SOPInstanceUID, PatientID,
+    structureSetROISequence.ROIName AS ROIName
+  FROM
+    `canceridc-data.idc_views.dicom_all`
+  CROSS JOIN
+    UNNEST (StructureSetROISequence) AS structureSetROISequence
+  WHERE
+    Modality = "RTSTRUCT"
+  AND ROIName = @ROIName
+

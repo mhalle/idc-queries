@@ -1,0 +1,16 @@
+summary: Get all distinct types of qualitative measurements available.
+
+queryReturns:
+  - name: Quantity_cm
+  - name: Value_cm
+
+query: >
+  SELECT
+    DISTINCT(Quantity.CodeMeaning) AS Quantity_cm,
+      Value.CodeMeaning AS Value_cm
+  FROM
+    `bigquery-public-data.idc_current.qualitative_measurements`
+  ORDER BY
+    Quantity_cm
+
+
