@@ -5,7 +5,7 @@ description: >
 
   TODO: demonstrate how to verify that the results are accurate on example instances
 
-query: > 
+query: |
   CREATE TEMP TABLE IF NOT EXISTS quantitative_pivoted AS
   SELECT
   PatientID,

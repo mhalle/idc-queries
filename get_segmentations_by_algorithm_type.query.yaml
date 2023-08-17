@@ -12,7 +12,7 @@ queryReturns:
   - name: SOPInstanceUID
   - name: SegmentAlgorithmType
 
-query: >
+query: |
   SELECT
     dicom_all.SeriesInstanceUID,
     dicom_all.SOPInstanceUID,

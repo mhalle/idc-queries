@@ -10,7 +10,7 @@ queryReturns:
   - name: PatientID
   - name: ROIName
 
-query: >
+query: |
   SELECT
     SOPInstanceUID, PatientID,
     structureSetROISequence.ROIName AS ROIName

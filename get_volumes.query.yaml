@@ -4,7 +4,7 @@ queryReturns:
   - name: 
   - name: volume
 
-query: >
+query: |
   SELECT
     *
   FROM

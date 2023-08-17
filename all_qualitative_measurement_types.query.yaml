@@ -4,7 +4,7 @@ queryReturns:
   - name: Quantity_cm
   - name: Value_cm
 
-query: >
+query: |
   SELECT
     DISTINCT(Quantity.CodeMeaning) AS Quantity_cm,
       Value.CodeMeaning AS Value_cm

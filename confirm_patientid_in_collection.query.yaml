@@ -10,7 +10,7 @@ queryReturns:
   - name: count_collection_id_list
   - name: collection_id_list
 
-query: >
+query: |
  SELECT
     dic_all.PatientID as PatientID,
     COUNT(DISTINCT(dic_all.collection_id)) as count_collection_id_list,

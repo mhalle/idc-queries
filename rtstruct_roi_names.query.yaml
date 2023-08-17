@@ -4,7 +4,7 @@ queryReturns:
   - name: RIOName
   - name: ROISeriesCount
 
-query: >
+query: |
   SELECT
     structureSetROISequence.ROIName AS ROIName,
     COUNT(DISTINCT(SeriesInstanceUID)) AS ROISeriesCount

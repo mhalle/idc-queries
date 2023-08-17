@@ -12,7 +12,7 @@ queryReturns:
   - name: collection_id
   - name: NumberOfSegments
 
-query: >
+query: |
  WITH
  seg_only AS (
  SELECT
