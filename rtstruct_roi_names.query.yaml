@@ -1,6 +1,6 @@
 summary: Get unique RTSTRUCT ROI names and count corresponding series
 
-queryReturns: 
+queryResultFields: 
   - name: RIOName
   - name: ROISeriesCount
 

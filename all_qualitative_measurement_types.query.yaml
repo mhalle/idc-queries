@@ -1,6 +1,6 @@
 summary: Get all distinct types of qualitative measurements available.
 
-queryReturns:
+queryResultFields:
   - name: Quantity_cm
   - name: Value_cm
 

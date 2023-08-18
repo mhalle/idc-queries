@@ -5,7 +5,7 @@ queryParameters:
     type: 'STRING'
     defaultValue: 'Heart'
 
-queryReturns: 
+queryResultFields: 
   - name: SOPInstanceUID
   - name: PatientID
   - name: ROIName
