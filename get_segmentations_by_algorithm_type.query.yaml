@@ -7,7 +7,7 @@ queryParameters:
     default: AUTOMATIC
     description: Type of segmentation algorithm used to segment data
 
-queryResultFields:
+queryResultColumns:
   - name: SeriesInstanceUID
   - name: SOPInstanceUID
   - name: SegmentAlgorithmType

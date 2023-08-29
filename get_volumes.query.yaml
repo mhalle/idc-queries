@@ -1,6 +1,6 @@
 title: Get all volume measurements
 
-queryResultFields:
+queryResultColumns:
   - name: 
   - name: volume
 

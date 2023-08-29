@@ -5,7 +5,7 @@ summary: >
  collection_id per PatientID, orders the result by those counts, 
  or just filters only those PatientID that has count > 1.
 
-queryResultFields:
+queryResultColumns:
   - name: PatientID
   - name: count_collection_id_list
   - name: collection_id_list

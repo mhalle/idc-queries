@@ -6,7 +6,7 @@ queryParameters:
     defaultValue: 8
     description: minimum number of segments
 
-queryResultFields:
+queryResultColumns:
   - name: PatientID
   - name: SeriesInstanceUID
   - name: collection_id
