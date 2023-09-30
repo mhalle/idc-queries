@@ -4,7 +4,7 @@ summary: Get all segmentations that were generated with a specific algorithm typ
 queryParameters:
   - name: segmentation_type
     type: STRING
-    default: AUTOMATIC
+    defaultValue: AUTOMATIC
     description: Type of segmentation algorithm used to segment data
 
 queryResultColumns:
