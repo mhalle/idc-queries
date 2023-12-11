@@ -1,9 +1,5 @@
 title: Get all volume measurements
 
-queryResultColumns:
-  - name: 
-  - name: volume
-
 query: |
   SELECT
     *
