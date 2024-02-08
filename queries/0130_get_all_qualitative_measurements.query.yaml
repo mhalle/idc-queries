@@ -1,0 +1,10 @@
+title: Get all qualitative measurements
+
+queryResultColumns:
+  - name: SOPInstanceUID
+  - name: Quantity
+  - name: Value
+
+query: | 
+  SELECT SOPInstanceUID, Quantity, Value
+  FROM `bigquery-public-data.idc_current.qualitative_measurements`

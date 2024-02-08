@@ -1,0 +1,11 @@
+title: "Slide Microscopy (SM) Modality: Select distinct values of slide IDs"
+
+queryResultColumns:
+  - name: slide_id
+
+query: |
+  SELECT
+  DISTINCT(ContainerIdentifier) as slide_id
+  FROM
+  `bigquery-public-data.idc_current.dicom_all`
+

@@ -1,0 +1,27 @@
+title: Summarize modalities per collection and mark those that have SEG or RTSTRUCT
+
+
+query: |
+  WITH
+  all_modalities AS (
+  SELECT
+    collection_id,
+    ARRAY_TO_STRING(ARRAY_AGG(DISTINCT(Modality)),",") AS Modalities,
+    ARRAY_TO_STRING(ARRAY_AGG(DISTINCT(access)),",") AS access,
+  FROM
+    `bigquery-public-data.idc_current.dicom_all`
+  GROUP BY
+    collection_id)
+  SELECT
+  *,
+  (CASE
+      WHEN Modalities LIKE "%SEG%" OR Modalities LIKE "%RTSTRUCT%" THEN "YES"
+    ELSE
+    "NO"
+  END
+    ) AS has_annotations
+  FROM
+  all_modalities
+  ORDER BY
+  has_annotations DESC
+

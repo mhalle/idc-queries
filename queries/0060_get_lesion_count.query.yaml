@@ -1,0 +1,31 @@
+title: Count lesions
+
+summary: > 
+ Get all lesion counts. (Does not account for the same lesion 
+ segmented multiple times by the same reader.)
+
+queryResultColumns:
+  - name: lesionCount
+
+query: |
+ WITH
+  lesionCount AS (
+  SELECT
+    PatientID,
+    ARRAY_LENGTH(SegmentSequence) AS perSeriesLesions
+  FROM
+    `bigquery-public-data.idc_current.dicom_all`
+  WHERE
+    Modality = "SEG"
+  ORDER BY
+    perSeriesLesions DESC)
+  SELECT
+  PatientID,
+  SUM(perSeriesLesions) AS segmentsPerPatient
+  FROM
+  lesionCount
+  GROUP BY
+  PatientID
+  ORDER BY
+  segmentsPerPatient DESC
+

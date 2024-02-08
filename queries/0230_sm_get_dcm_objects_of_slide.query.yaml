@@ -1,0 +1,17 @@
+title: "Slide Microscopy (SM) Modality: select distinct values of slide IDs"
+
+queryParameters:
+  - name: slide_id
+    type: STRING
+    defaultValue: ""
+
+
+
+query: |
+  SELECT
+  gcs_url
+  FROM
+  `bigquery-public-data.idc_current.dicom_all`
+  WHERE
+  ContainerIdentifier = @slide_id
+

@@ -1,0 +1,18 @@
+title: Get all the distinct combinations values describing anatomy/types of the available segmentation
+
+queryResultColumns:
+  - name: AnatomicRegion_cm
+  - name: AnatomicRegionModifier_cm
+  - name: SegmentedPropertyCategory_cm
+  - name: SegmentedPropertyType_cm
+  - name: SegmentedPropertyType_AnatomicRegionModifier_cm
+
+query: |
+  SELECT
+    DISTINCT(AnatomicRegion.CodeMeaning) AS AnatomicRegion_cm,
+    AnatomicRegionModifier.CodeMeaning AS AnatomicRegionModifier_cm,
+    SegmentedPropertyCategory.CodeMeaning AS SegmentedPropertyCategory_cm,
+    SegmentedPropertyType.CodeMeaning AS SegmentedPropertyType_cm,
+    SegmentedPropertyType.AnatomicRegionModifierSequence[SAFE_OFFSET(0)].CodeMeaning AS SegmentedPropertyType_AnatomicRegionModifier_cm
+  FROM
+    `bigquery-public-data.idc_current.segmentations`

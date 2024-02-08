@@ -1,0 +1,11 @@
+title: "SM: Select slides of project"
+
+queryParameters:
+  - name: project_id
+    type: STRING
+    default: ""
+
+query: |
+  SELECT DISTINCT(ContainerIdentifier) AS slide_id
+  FROM  `bigquery-public-data.idc_current.dicom_all`
+  WHERE ClinicalTrialProtocolID = @project_id

@@ -1,0 +1,43 @@
+title: "SM: Simplify access to WSI-related information"
+
+queryParameters:
+  - name: slide_id
+    type: STRING
+  - name: gcs_url
+    type: STRING
+
+queryResultColumns:
+  - name: slide_id
+  - name: patient_id
+  - name: dataset
+  - name: width
+  - name: height
+  - name: pixel_spacing
+  - name: compression
+  
+query: |
+  WITH slide_images AS (
+      SELECT
+          ContainerIdentifier AS slide_id,
+          PatientID AS patient_id,
+          ClinicalTrialProtocolID AS dataset,
+          TotalPixelMatrixColumns AS width,
+          TotalPixelMatrixRows AS height,
+          gcs_url, -- DICOM object URL in GCS bucket
+          CAST(SharedFunctionalGroupsSequence[OFFSET(0)].
+              PixelMeasuresSequence[OFFSET(0)].
+              PixelSpacing[OFFSET(0)] AS FLOAT64) AS pixel_spacing,
+          CASE TransferSyntaxUID
+              WHEN '1.2.840.10008.1.2.4.50' THEN 'jpeg'
+              WHEN '1.2.840.10008.1.2.4.91' THEN 'jpeg2000'
+              ELSE 'other'
+          END AS compression
+      FROM  `bigquery-public-data.idc_current.dicom_all`
+      WHERE NOT (ContainerIdentifier IS NULL)
+  )
+  SELECT slide_id, patient_id, dataset, width, height, pixel_spacing, compression
+  FROM slide_images
+  WHERE 
+    slide_id = @slide_id 
+    OR gcs_url = @gcs_url
+

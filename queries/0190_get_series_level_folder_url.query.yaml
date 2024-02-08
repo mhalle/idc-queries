@@ -1,0 +1,31 @@
+title: Get series-level folder URL for the selection
+
+description: >
+ Get series-level folder URLs for the series with Modality SM, 
+ collection_idm="cptac_brca", and sm_attributes.ObjectiveLensPower = 20.
+ Return at most `@query_limit` values.
+
+queryParameters:
+ - name: query_limit
+   defaultValue: 3
+   type: INT64
+
+query: |
+
+  SELECT
+    ANY_VALUE(CONCAT("s3", REGEXP_SUBSTR(gcs_url, "(://.*)/"),"/")) AS url
+  FROM
+    `bigquery-public-data.idc_current.dicom_all` AS dicom_all
+  JOIN
+    `bigquery-public-data.idc_current.dicom_metadata_curated_series_level` AS sm_attributes
+  ON
+    dicom_all.SeriesInstanceUID = sm_attributes.SeriesInstanceUID
+  WHERE
+    dicom_all.Modality = "SM"
+    # select only series from the CPTAC-BRCA collection
+    AND collection_id = "cptac_brca"
+    AND sm_attributes.ObjectiveLensPower = 20
+  GROUP BY
+    dicom_all.SeriesInstanceUID
+  LIMIT @query_limit
+

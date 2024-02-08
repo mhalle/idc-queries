@@ -1,9 +1,11 @@
-description: > 
-  Select quantitative and qualitative, pivot by measurement type, 
-  join by SOPInstanceUID (since there is one instance of each measurement 
-  per SR instance, this approach will work for the LIDC collection).
+title: Select quantitative and qualitative, pivot by measurement type, join by SOPInstanceUID
 
-  TODO: demonstrate how to verify that the results are accurate on example instances
+description: >
+  (since there is one instance of each measurement per SR instance, 
+  this approach will work for the LIDC collection)
+
+  TODO: demonstrate how to verify that the results are accurate 
+  on example instances
 
 query: |
   CREATE TEMP TABLE IF NOT EXISTS quantitative_pivoted AS
@@ -33,6 +35,7 @@ query: |
   GROUP BY
   1,
   2; 
+
 
   CREATE temp TABLE IF NOT EXISTS qualitative_pivoted AS
   SELECT
@@ -93,18 +96,17 @@ query: |
   END
     ) AS malignancy
   FROM
-    `bigquery-public-data.idc_v9.qualitative_measurements`
+  `bigquery-public-data.idc_v9.qualitative_measurements`
   GROUP BY
   1,
   2;
   SELECT
-    quantitative_pivoted.*,
-    qualitative_pivoted.* EXCEPT (PatientID,
+  quantitative_pivoted.*,
+  qualitative_pivoted.* EXCEPT (PatientID,
     SOPInstanceUID)
   FROM
-    quantitative_pivoted
+  quantitative_pivoted
   JOIN
-    qualitative_pivoted
+  qualitative_pivoted
   ON
-    quantitative_pivoted.SOPInstanceUID = qualitative_pivoted.SOPInstanceUID
-
+  quantitative_pivoted.SOPInstanceUID = qualitative_pivoted.SOPInstanceUID

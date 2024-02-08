@@ -1,12 +1,13 @@
+title: Select all segmentations with anisotropic pixel spacing and number of columns unequal to number of rows
 keywords: 
   - segmentation
   - anisotropic pixel spacing
     
-summary: | 
+summary: >
  Select all segmentations with anisotropic pixel 
  spacing and number of columns unequal to number of rows.
 
-description: |
+description: >
   First, we select all series that have segmentations with the 
   number of columns not equal to number of rows, and then 
   from that we select series that have PixelSpacing components 

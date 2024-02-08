@@ -1,4 +1,4 @@
-summary: Get instances that have a specific ROIName in RTSTRUCT
+title: Get instances that have a specific ROIName in RTSTRUCT
 
 queryParameters:
   - name: ROIName

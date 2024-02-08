@@ -1,0 +1,36 @@
+title: PET related explorations
+
+description: |
+  For LNQ Erik is working on the PET display calculations and 
+  wanted to have a robust implementation of SUV calculations. He 
+  worked from QIBA algorithms but did not have sample data.
+  We used bigquery to search the headers to what kind of data 
+  is in IDC. It was fast and efficient to search and we were 
+  able to go back and forth between bq and the idc sandbox 
+  to see the images and look at the tags. 
+  
+
+  This is a practical example that would have been very hard 
+  without IDC and it can be a candidate for an example.
+
+
+queryResultColumns:
+  - name: StudyInstanceUID
+  - name: Units
+  - name: DecayCorrection
+  - name: CorrectedImage
+
+query: |
+  SELECT
+    StudyInstanceUID,
+    ANY_VALUE(Units) as Units,
+    ANY_VALUE(DecayCorrection) as DecayCorrection,
+    ANY_VALUE(CorrectedImage) as CorrectedImage
+  FROM
+    `bigquery-public-data.idc_v9.dicom_all`
+  WHERE 
+    UNITS="PROPCNTS"
+      AND DecayCorrection="START"
+      AND "DECY" IN UNNEST(CorrectedImage)
+      AND "ATTN" IN UNNEST(CorrectedImage)
+  GROUP BY StudyInstanceUID

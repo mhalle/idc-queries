@@ -1,3 +1,4 @@
+title: Confirm each PatientID is included in a single collection
 summary: >
  Run a query that selects distinct PatientID, grouping by 
  PatientID, and aggregates distinct values of collection_id 

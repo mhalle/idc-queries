@@ -1,0 +1,45 @@
+title: "SM: Exploration of channels in HTAN collections"
+
+query: |
+  WITH
+    SpecimenPreparationSequence_unnested AS (
+      SELECT
+        gcs_url,
+        collection_id,
+        SOPInstanceUID,
+        StudyInstanceUID,
+        ContainerIdentifier,
+        ARRAY_LENGTH(SpecimenDescriptionSequence[SAFE_OFFSET(0)].SpecimenPreparationSequence),
+          steps_unnested.SpecimenPreparationStepContentItemSequence AS steps_unnested1,
+      FROM
+        `bigquery-public-data.idc_current.dicom_all`
+      CROSS JOIN
+        UNNEST (SpecimenDescriptionSequence[SAFE_OFFSET(0)].SpecimenPreparationSequence) AS steps_unnested
+      WHERE
+        Modality = "SM"
+    ),
+    steps_unnested AS (
+      SELECT
+        SOPInstanceUID,
+        StudyInstanceUID,
+        collection_id,
+        ContainerIdentifier,
+        gcs_url,
+        steps_unnested2.ValueType,
+        steps_unnested2.ConceptNameCodeSequence[SAFE_OFFSET(0)].CodeMeaning AS concept,
+        steps_unnested2.TextValue AS text_value,
+        steps_unnested2.ConceptCodeSequence[SAFE_OFFSET(0)].CodeMeaning AS value,
+  #*
+      FROM
+        SpecimenPreparationSequence_unnested
+      CROSS JOIN
+        UNNEST(steps_unnested1) AS steps_unnested2
+      )
+  SELECT *,
+    concat("https://viewer.imaging.datacommons.cancer.gov/slim/studies/",StudyInstanceUID) as viewer_url
+  FROM steps_unnested 
+  WHERE 
+    collection_id LIKE "htan_hms" 
+    AND concept = "Component investigated" 
+    AND ValueType = "TEXT"
+

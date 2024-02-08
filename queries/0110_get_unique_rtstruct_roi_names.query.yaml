@@ -1,10 +1,10 @@
-summary: Get unique RTSTRUCT ROI names and count corresponding series
+title: "Get unique RTSTRUCT ROI names and count corresponding series"
 
-queryResultColumns: 
-  - name: RIOName
+queryResultColumns:
+  - name: ROIName
   - name: ROISeriesCount
-
-query: |
+  
+query: | 
   SELECT
     structureSetROISequence.ROIName AS ROIName,
     COUNT(DISTINCT(SeriesInstanceUID)) AS ROISeriesCount
@@ -12,12 +12,7 @@ query: |
     `bigquery-public-data.idc_current.dicom_all`
   CROSS JOIN
     UNNEST (StructureSetROISequence) AS structureSetROISequence
-  WHERE
-    Modality = "RTSTRUCT"
-  GROUP BY
-    ROIName
-  ORDER BY
-    ROISeriesCount DESC
-
-
-
+    WHERE
+      Modality = "RTSTRUCT"
+  GROUP BY ROIName
+  ORDER BY ROISeriesCount DESC

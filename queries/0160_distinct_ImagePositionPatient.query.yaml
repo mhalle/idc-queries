@@ -1,6 +1,6 @@
-summary:   Count number of series and distinct ImagePositionPatient values per series.
+title:   Count number of series and distinct ImagePositionPatient values per series.
 
-description: |
+description: >
   Count number of series and distinct ImagePositionPatient values per series.
   This query can be useful in identifying image series that are not 
   conventional 3d crossectional images. 

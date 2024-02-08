@@ -1,0 +1,48 @@
+title: "SM: Select slides based on the processing steps characteristics"
+
+description: Building upon the previous query, we can, for example, select all slides that were freeze-processed.
+
+queryResultColumns:
+  - name: stepName_cm
+  - name: stepValue_cm
+
+
+query: |
+  WITH
+  SpecimenPreparationSequence_unnested AS (
+  SELECT
+    gcs_url,
+    SOPInstanceUID,
+    ContainerIdentifier,
+    ARRAY_LENGTH(SpecimenDescriptionSequence[SAFE_OFFSET(0)].SpecimenPreparationSequence),
+    steps_unnested.SpecimenPreparationStepContentItemSequence AS steps_unnested1,
+  FROM
+    `bigquery-public-data.idc_current.dicom_all`
+  CROSS JOIN
+    UNNEST (SpecimenDescriptionSequence[SAFE_OFFSET(0)].SpecimenPreparationSequence) AS steps_unnested
+  WHERE
+    (collection_id = "tcga_lusc"
+      OR collection_id = "tcga_luad")
+    AND Modality = "SM"),
+  steps_unnested AS (
+  SELECT
+    SOPInstanceUID,
+    ContainerIdentifier,
+    gcs_url,
+    steps_unnested2.ValueType,
+    steps_unnested2.ConceptNameCodeSequence[SAFE_OFFSET(0)].CodeMeaning AS conceptName_CodeMeaning,
+    steps_unnested2.TextValue AS text_value,
+    steps_unnested2.ConceptCodeSequence[SAFE_OFFSET(0)].CodeMeaning AS code_value_CodeMeaning,
+    #*
+  FROM
+    SpecimenPreparationSequence_unnested
+  CROSS JOIN
+    UNNEST(steps_unnested1) AS steps_unnested2)
+  SELECT
+  DISTINCT(conceptName_CodeMeaning) AS stepName_cm,
+  code_value_CodeMeaning AS stepValue_cm,
+  FROM
+  Steps_unnested
+  WHERE
+   conceptName_CodeMeaning = "Embedding medium" and code_value_CodeMeaning = "Tissue freezing medium"
+

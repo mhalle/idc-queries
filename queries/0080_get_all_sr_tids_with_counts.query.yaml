@@ -1,0 +1,34 @@
+title: Get all SR TIDs with counts
+
+queryResultColumns:
+  - name: SOPInstanceUID
+  - name: srTID
+
+query: |
+  WITH
+  ctsUnnested AS (
+  WITH
+    structuredReports AS (
+    SELECT
+      *
+    FROM
+      `bigquery-public-data.idc_current.dicom_all`
+    WHERE
+      Modality = "SR" )
+  SELECT
+    SOPInstanceUID,
+    contentTemplateSequence.TemplateIdentifier AS srTID
+  FROM
+    structuredReports
+  CROSS JOIN
+    UNNEST(ContentTemplateSequence) AS contentTemplateSequence )
+  SELECT
+  srTID,
+  COUNT(DISTINCT(SOPInstanceUID)) AS srTIDsCount
+  FROM
+  ctsUnnested
+  GROUP BY
+  srTID
+  ORDER BY
+  srTIDsCount DESC
+

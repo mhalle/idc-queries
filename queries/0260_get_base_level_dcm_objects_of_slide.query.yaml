@@ -1,0 +1,27 @@
+title: "SM: Select base level DCM objects of slide"
+
+queryResultColumns:
+  - name: slide_id
+  - name: gcs_url
+  
+query: |
+  WITH max_sizes AS (
+      SELECT
+          ContainerIdentifier,
+          FrameOfReferenceUID,
+          MAX(TotalPixelMatrixColumns * TotalPixelMatrixRows) AS max_size
+      FROM `bigquery-public-data.idc_current.dicom_metadata``
+      WHERE
+          NOT (ContainerIdentifier IS NULL)
+      GROUP BY ContainerIdentifier, FrameOfReferenceUID 
+  )
+  SELECT
+      b.ContainerIdentifier AS slide_id,
+      b.gcs_url as gcs_url
+  FROM
+      -- ContainerIdentifier is not unique if slide was scanned twice.
+      -- Therefore, identify slides by both ContainerIdentifier and FrameOfReferenceUID.
+      max_sizes AS a JOIN  `bigquery-public-data.idc_current.dicom_all` AS b ON
+          b.ContainerIdentifier = a.ContainerIdentifier
+          AND b.FrameOfReferenceUID = a.FrameOfReferenceUID
+          AND a.max_size = b.TotalPixelMatrixColumns * b.TotalPixelMatrixRows

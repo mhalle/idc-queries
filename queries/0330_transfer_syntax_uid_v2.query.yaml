@@ -1,0 +1,44 @@
+title: Sample values of TransferSyntaxUID (2)
+
+description: > 
+  An alternative query below will sample across modalities and encodings, 
+  and adjust the viewer URL as needed between Slim and OHIF.
+
+query: |
+  WITH
+  selection AS (
+  SELECT
+  TransferSyntaxUID,
+  Modality,
+  ANY_VALUE(SOPInstanceUID) AS SOPInstanceUID
+  FROM
+  `bigquery-public-data.idc_current.dicom_all`
+  GROUP BY
+  TransferSyntaxUID,
+  Modality)
+  SELECT
+  dicom_all.TransferSyntaxUID,
+  dicom_all.Modality,
+  CASE dicom_all.TransferSyntaxUID
+  WHEN "1.2.840.10008.1.2.1" THEN "Explicit VR Big Endian"
+  WHEN "1.2.840.10008.1.2.4.50" THEN "JPEG Baseline (Process 1)"
+  WHEN "1.2.840.10008.1.2.4.90" THEN "JPEG 2000 Image Compression (Lossless Only)"
+  WHEN "1.2.840.10008.1.2.4.91" THEN "JPEG 2000 Image Compression"
+  END
+  AS transferSyntax_readable,
+  dicom_all.StudyInstanceUID,
+  dicom_all.SeriesInstanceUID,
+  CASE dicom_all.Modality
+  WHEN "SM" THEN CONCAT("https://viewer.imaging.datacommons.cancer.gov/slim/studies/",StudyInstanceUID,"/series/",SeriesInstanceUID)
+  ELSE CONCAT("https://viewer.imaging.datacommons.cancer.gov/viewer/",StudyInstanceUID,"?seriesInstanceUID=",SeriesInstanceUID)
+  END
+  AS viewer_url
+  FROM
+  selection
+  JOIN
+  `bigquery-public-data.idc_current.dicom_all` AS dicom_all
+  ON
+  selection.SOPInstanceUID = dicom_all.SOPInstanceUID
+  ORDER BY
+  TransferSyntaxUID, Modality
+
