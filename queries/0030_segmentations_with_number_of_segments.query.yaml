@@ -1,7 +1,7 @@
 title: Select segmentations that have more than N segmentations
 
 queryParameters:
-  - name: segment_count
+  - name: min_segment_count
     type: INT64
     defaultValue: 8
     description: minimum number of segments
@@ -35,5 +35,5 @@ query: |
   FROM
     seg_only
   WHERE
-    ARRAY_LENGTH(SegmentSequence) >= @segment_count
+    ARRAY_LENGTH(SegmentSequence) >= @min_segment_count
   ORDER BY NumberOfSegments
