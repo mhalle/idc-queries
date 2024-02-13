@@ -1,4 +1,4 @@
-summary: Select segmentations that have more than N segmentations
+title: Select segmentations that have more than N segmentations
 
 queryParameters:
   - name: segment_count

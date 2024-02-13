@@ -1,4 +1,4 @@
-summary: Get all distinct types of qualitative measurements available.
+title: Get all distinct types of qualitative measurements available.
 
 queryResultColumns:
   - name: Quantity_cm

@@ -10,7 +10,7 @@ query: |
           ContainerIdentifier,
           FrameOfReferenceUID,
           MAX(TotalPixelMatrixColumns * TotalPixelMatrixRows) AS max_size
-      FROM `bigquery-public-data.idc_current.dicom_metadata``
+      FROM `bigquery-public-data.idc_current.dicom_metadata`
       WHERE
           NOT (ContainerIdentifier IS NULL)
       GROUP BY ContainerIdentifier, FrameOfReferenceUID 

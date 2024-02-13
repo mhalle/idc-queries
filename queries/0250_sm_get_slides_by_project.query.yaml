@@ -3,7 +3,7 @@ title: "SM: Select slides of project"
 queryParameters:
   - name: project_id
     type: STRING
-    default: ""
+    defaultValue: ""
 
 query: |
   SELECT DISTINCT(ContainerIdentifier) AS slide_id

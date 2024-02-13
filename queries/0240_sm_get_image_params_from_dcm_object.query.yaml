@@ -3,9 +3,9 @@ title: "SM: get width, height, and pixel size of DCM object"
 queryParameters:
   - name: gcs_url
     type: STRING
-    default: ""
+    defaultValue: ""
 
-queryReturnColumns:
+queryResultColumns:
   - name: width
   - name: height
   - name: pixel_size_x

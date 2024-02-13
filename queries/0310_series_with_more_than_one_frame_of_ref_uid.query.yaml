@@ -1,6 +1,6 @@
 title: Get series that have more than one value of FrameOfReferenceUID
 
-queryReturnColumns:
+queryResultColumns:
   - name: StudyInstanceUID
   - name: SeriesInstanceUID
   - name: num_FoR
